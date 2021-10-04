@@ -33,6 +33,18 @@ async function getData(code) {
 	return data;
 }
 
+const logEventData = ({ descricao, descricaoWeb, dtHrCriado, unidade, unidadeDestino }) => {
+	log(`==> ${getIcon(descricaoWeb)} ${descricao}`);
+	log(chalk.blackBright(`Data: ${dtHrCriado}`));
+	log(chalk.blackBright(`Local: ${unidade.nome}`));
+
+	if (unidadeDestino) {
+		log(chalk.blackBright(`Indo para: ${unidadeDestino?.nome}`));
+	}
+
+	log();
+}
+
 async function run() {
 	try {
 		const code = process?.argv[2]?.toUpperCase() ?? invalidParamsObjectError()
@@ -41,21 +53,14 @@ async function run() {
 
 		const data = await getData(code);
 
-		const events = data?.eventos || [];
+		if (!!data.erro) {
+			throw new Error(data.mensagem)
+		}
 
-		events.map((event) => {
-			const { descricao, descricaoWeb, dtHrCriado, unidade, unidadeDestino } = event;
+		const events = data?.eventos ?? [];
 
-			log(`==> ${getIcon(descricaoWeb)} ${descricao}`);
-			log(chalk.blackBright(`Data: ${dtHrCriado}`));
-			log(chalk.blackBright(`Local: ${unidade.nome}`));
+		events.map(logEventData);
 
-			if (unidadeDestino) {
-				log(chalk.blackBright(`Indo para: ${unidadeDestino?.nome}`));
-			}
-
-			log();
-		});
 	} catch (error) {
 		log(`❌ ${error.message}`);
 		return;
