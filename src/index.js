@@ -34,13 +34,14 @@ async function getData(code) {
 }
 
 const logEventData = ({ descricao, descricaoWeb, dtHrCriado, unidade, unidadeDestino }) => {
-	log(`==> ${getIcon(descricaoWeb)} ${descricao}`);
-	log(chalk.blackBright(`Data: ${dtHrCriado}`));
-	log(chalk.blackBright(`Local: ${unidade.nome}`));
+	console.table(descricao, descricaoWeb, dtHrCriado, unidade, unidadeDestino)
+	// log(`==> ${getIcon(descricaoWeb)} ${descricao}`);
+	// log(chalk.blackBright(`Data: ${dtHrCriado}`));
+	// log(chalk.blackBright(`Local: ${unidade.nome}`));
 
-	if (unidadeDestino) {
-		log(chalk.blackBright(`Indo para: ${unidadeDestino?.nome}`));
-	}
+	// if (unidadeDestino) {
+	// 	log(chalk.blackBright(`Indo para: ${unidadeDestino?.nome}`));
+	// }
 
 	log();
 }
